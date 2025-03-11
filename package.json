@@ -1,0 +1,34 @@
+{
+  "name": "wayback.js",
+  "version": "0.0.1",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "description": "The Wayback Availability JSON API in JavaScript.",
+  "keywords": [
+    "waybackmachine",
+    "wayback-machine",
+    "internetarchive",
+    "internet-archive",
+    "wayback",
+    "machine"
+  ],
+  "main": "src/wayback.js",
+  "exports": {
+    ".": "./src/wayback.js"
+  },
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Patrick Trumpis <ptrumpis@pm.me>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ptrumpis/wayback.js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ptrumpis/wayback.js/issues"
+  },
+  "license": "MIT"
+}
