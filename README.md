@@ -7,6 +7,11 @@ The Wayback Availability JSON API in JavaScript.
 npm i wayback.js
 ```
 
+## ℹ️ Info
+### Dependents
+This package is a dependency of:  
+[👻 Snap Camera Server](https://github.com/ptrumpis/snap-camera-server)
+
 ## ❤️ Support
 If you like my work and want to support me, feel free to invite me for a virtual coffee ☕  
 
