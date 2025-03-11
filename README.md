@@ -4,6 +4,7 @@ The Wayback Availability JSON API in JavaScript.
 ## 🚀 Usage
 ### npm
 ```shell
+npm i wayback.js
 ```
 
 ## ❤️ Support
