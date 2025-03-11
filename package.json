@@ -1,10 +1,6 @@
 {
   "name": "wayback.js",
   "version": "0.0.1",
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org/"
-  },
   "description": "The Wayback Availability JSON API in JavaScript.",
   "keywords": [
     "waybackmachine",
