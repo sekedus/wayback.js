@@ -30,8 +30,9 @@ class Wayback {
     }
 
     async isArchived(url, resolveRedirects = true) {
-        if (this.#isCacheValid(url)) {
-            return this.#cache.get(url).data;
+        const cachedEntry = this.#getCache(url);
+        if (cachedEntry) {
+            return cachedEntry;
         }
 
         try {
@@ -50,10 +51,7 @@ class Wayback {
 
                 if (closest?.url && closest?.timestamp) {
                     const snapshot = { url: closest.url, timestamp: closest.timestamp };
-                    this.#cache.set(url, {
-                        data: snapshot,
-                        cacheTimestamp: Date.now()
-                    });
+                    this.#setCache(url, snapshot);
 
                     return snapshot;
                 }
@@ -81,10 +79,7 @@ class Wayback {
                     const formattedTimestamp = timestamp ? timestamp[0] : this.#currentTimestamp();
 
                     const snapshot = { url: archiveUrl, timestamp: formattedTimestamp };
-                    this.#cache.set(url, {
-                        data: snapshot,
-                        cacheTimestamp: Date.now()
-                    });
+                    this.#setCache(url, snapshot);
 
                     return snapshot;
                 }
@@ -157,24 +152,41 @@ class Wayback {
         return new Date(Date.now() - 1000).toISOString().replace(/[-:T]/g, '').split('.')[0];
     }
 
-    #isCacheValid(url) {
-        if (!this.#cache.has(url)) {
-            return false;
+    #getCache(url) {
+        if (this.#cacheTTL) {
+            const entry = this.#cache.get(url);
+            if (entry) {
+                if ((Date.now() - entry.timestamp) >= this.#cacheTTL) {
+                    this.#cache.delete(url);
+                } else {
+                    return entry.data;
+                }
+            }
         }
 
-        const entry = this.#cache.get(url);
-        return entry && Date.now() - entry.cacheTimestamp < this.#cacheTTL;
+        return undefined;
+    }
+
+    #setCache(url, snapshot) {
+        if (this.#cacheTTL) {
+            this.#cache.set(url, {
+                data: snapshot,
+                cacheTimestamp: Date.now()
+            });
+        }
     }
 
     #cleanupCache() {
-        const now = Date.now();
-        for (const [url, entry] of this.#cache) {
-            if (now - entry.cacheTimestamp >= this.#cacheTTL) {
-                this.#cache.delete(url);
+        if (this.#cacheTTL) {
+            const now = Date.now();
+            for (const [url, entry] of this.#cache) {
+                if (now - entry.cacheTimestamp >= this.#cacheTTL) {
+                    this.#cache.delete(url);
+                }
             }
         }
     }
 }
 
 export default Wayback;
-export { Wayback as WaybackMachine };
+export { Wayback };
