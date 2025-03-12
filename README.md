@@ -1,3 +1,10 @@
+[![GitHub License](https://img.shields.io/github/license/ptrumpis/wayback.js)](https://github.com/ptrumpis/wayback.js?tab=MIT-1-ov-file#readme)
+[![GitHub Release Date](https://img.shields.io/github/release-date/ptrumpis/wayback.js)](https://github.com/ptrumpis/wayback.js/releases/latest)
+[![GitHub Release](https://img.shields.io/github/v/release/ptrumpis/wayback.js)](https://github.com/ptrumpis/wayback.js/releases/latest)
+[![GitHub Commits](https://img.shields.io/github/commit-activity/t/ptrumpis/wayback.js)](https://github.com/ptrumpis/wayback.js/commits)
+[![GitHub stars](https://img.shields.io/github/stars/ptrumpis/wayback.js?style=flat)](https://github.com/ptrumpis/wayback.js/stargazers) 
+[![GitHub forks](https://img.shields.io/github/forks/ptrumpis/wayback.js?style=flat)](https://github.com/ptrumpis/wayback.js/forks)
+
 # 🏛️ wayback.js
 The Wayback Availability JSON API in JavaScript.
 
