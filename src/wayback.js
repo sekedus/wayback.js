@@ -40,7 +40,11 @@ class Wayback {
             }
 
             const response = await this.#fetch(`${this.#baseApiUrl}?timestamp=${this.#currentTimestamp()}&url=${encodeURIComponent(url.replace(/^https?:\/\//, ''))}`, { method: 'GET' });
-            if (response?.ok) {
+            if (!response) {
+                return null;
+            }
+
+            if (response.ok) {
                 const data = await response.json();
                 const closest = data.archived_snapshots?.closest || null;
 
@@ -66,7 +70,11 @@ class Wayback {
     async saveUrl(url) {
         try {
             const response = await this.#fetch(`${this.#baseSaveUrl}${url}`, { method: 'GET', redirect: 'manual' });
-            if (response?.ok || response?.status === 301 || response?.status === 302) {
+            if (!response) {
+                return null;
+            }
+
+            if (response.ok || response.status === 301 || response.status === 302) {
                 const archiveUrl = response.headers.get('Location');
                 if (archiveUrl) {
                     const timestamp = archiveUrl.match(/(\d{14})/);
@@ -140,7 +148,7 @@ class Wayback {
             if (e.name !== 'AbortError' && e.name !== 'TypeError') {
                 throw e;
             }
-            console.warn(e.message);
+            console.warn(`${url} - ${e.message}`);
         }
         return null;
     }
