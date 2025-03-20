@@ -9,6 +9,10 @@ class Wayback {
     #gcInterval;
     #cleanupInterval;
 
+    static #registry = new FinalizationRegistry((cleanupInterval) => {
+        clearInterval(cleanupInterval);
+    });
+
     constructor({
         connectionTimeoutMs = 9000,
         cacheTTL = 86400,
@@ -22,11 +26,13 @@ class Wayback {
         this.#gcInterval = Math.max(parseInt(gcInterval) * 1000, 3600 * 1000);
 
         this.#cleanupInterval = setInterval(() => this.#cleanupCache(), this.#gcInterval).unref();
+        Wayback.#registry.register(this, this.#cleanupInterval, this);
     }
 
     destroy() {
         clearInterval(this.#cleanupInterval);
         this.#cache.clear();
+        Wayback.#registry.unregister(this);
     }
 
     async isArchived(url, resolveRedirects = true) {
