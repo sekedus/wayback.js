@@ -46,7 +46,7 @@ class Wayback {
                 url = await this.getFinalRedirectUrl(url);
             }
 
-            const response = await this.#fetch(`${this.#baseApiUrl}?timestamp=${this.#currentTimestamp()}&url=${encodeURIComponent(url.replace(/^https?:\/\//, ''))}`, { method: 'GET' });
+            const response = await this.#fetch(`${this.#baseApiUrl}?timestamp=${Wayback.currentTimestamp()}&url=${encodeURIComponent(url.replace(/^https?:\/\//, ''))}`, { method: 'GET' });
             if (!response) {
                 return null;
             }
@@ -82,7 +82,7 @@ class Wayback {
                 const archiveUrl = response.headers.get('Location');
                 if (archiveUrl) {
                     const timestamp = archiveUrl.match(/(\d{14})/);
-                    const formattedTimestamp = timestamp ? timestamp[0] : this.#currentTimestamp();
+                    const formattedTimestamp = timestamp ? timestamp[0] : Wayback.currentTimestamp();
 
                     const snapshot = { url: archiveUrl, timestamp: formattedTimestamp };
                     this.#setCache(url, snapshot);
@@ -136,6 +136,10 @@ class Wayback {
         return url;
     }
 
+    static currentTimestamp() {
+        return new Date(Date.now() - 1000).toISOString().replace(/[-:T]/g, '').split('.')[0];
+    }
+
     async #fetch(url, options = {}) {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), this.#connectionTimeoutMs);
@@ -152,10 +156,6 @@ class Wayback {
             console.warn(`${url} - ${e.message}`);
         }
         return null;
-    }
-
-    #currentTimestamp() {
-        return new Date(Date.now() - 1000).toISOString().replace(/[-:T]/g, '').split('.')[0];
     }
 
     #getCache(url) {
