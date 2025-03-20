@@ -156,7 +156,7 @@ class Wayback {
         if (this.#cacheTTL) {
             const entry = this.#cache.get(url);
             if (entry) {
-                if ((Date.now() - entry.timestamp) >= this.#cacheTTL) {
+                if ((Date.now() - entry.cacheTimestamp) >= this.#cacheTTL) {
                     this.#cache.delete(url);
                 } else {
                     return entry.data;
