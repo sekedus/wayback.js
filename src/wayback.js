@@ -35,18 +35,28 @@ class Wayback {
         Wayback.#registry.unregister(this);
     }
 
-    async isArchived(url, resolveRedirects = true) {
+    async isArchived(url, options = {}) {
+        const opts = {
+            resolveRedirects: true,
+            oldestArchive: false,
+            ...options
+        };
+
         const cachedEntry = this.#getCache(url);
         if (cachedEntry) {
             return cachedEntry;
         }
 
         try {
-            if (resolveRedirects) {
+            if (opts.resolveRedirects) {
                 url = await this.getFinalRedirectUrl(url);
             }
 
-            const response = await this.#fetch(`${this.#baseApiUrl}?timestamp=${Wayback.currentTimestamp()}&url=${encodeURIComponent(url.replace(/^https?:\/\//, ''))}`, { method: 'GET' });
+            const timestamp = opts.oldestArchive
+                ? '19700101000000' // January 1, 1970, UTC
+                : Wayback.currentTimestamp();
+
+            const response = await this.#fetch(`${this.#baseApiUrl}?timestamp=${timestamp}&url=${encodeURIComponent(url.replace(/^https?:\/\//, ''))}`, { method: 'GET' });
             if (!response) {
                 return null;
             }
