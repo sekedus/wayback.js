@@ -53,7 +53,7 @@ class Wayback {
             }
 
             const timestamp = opts.oldestArchive
-                ? '19700101000000' // January 1, 1970, UTC
+                ? '19950301190227' // March 1, 1995 at 19:02:27 UTC
                 : Wayback.currentTimestamp();
 
             const response = await this.#fetch(`${this.#baseApiUrl}?timestamp=${timestamp}&url=${encodeURIComponent(url.replace(/^https?:\/\//, ''))}`, { method: 'GET' });
