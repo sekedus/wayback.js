@@ -110,7 +110,7 @@ class Wayback {
     }
 
     async saveOutdatedUrl(url, maxAgeDays = 30, resolveRedirects = true) {
-        const snapshot = await this.isArchived(url, resolveRedirects);
+        const snapshot = await this.isArchived(url, { resolveRedirects });
         if (!snapshot || !snapshot.timestamp) {
             return this.saveUrl(url);
         }
